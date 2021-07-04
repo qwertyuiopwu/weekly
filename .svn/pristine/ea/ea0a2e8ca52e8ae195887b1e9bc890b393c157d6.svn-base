@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head :: commonHead('index')"></head>
+<body class="form-control">
+    <p class="output" th:text="${welcome}">hello thymeleaf</p>
+</body>
+
+</html>

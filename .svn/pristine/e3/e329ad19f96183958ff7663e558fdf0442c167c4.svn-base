@@ -1,0 +1,55 @@
+package com.formssi.weekReportTool.projectInfo.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.formssi.weekReportTool.projectInfo.domain.ProjectInfoBean;
+import com.formssi.weekReportTool.projectInfo.mapper.ProjectInfoDao;
+import com.formssi.weekReportTool.system.xmlTool.Dom4jToXml;
+import com.formssi.weekReportTool.system.xmlTool.ProInfo;
+
+@Service
+public class ProjectInfoService {
+	@Autowired
+	private ProjectInfoDao projectInfoDao;
+	
+	/**
+	 * 查询项目信息
+	 * @return
+	 */
+	public List<ProjectInfoBean> queryProject(){
+		return projectInfoDao.queryProject();
+	}
+	
+	/**
+	 * 获取项目编码
+	 * @return
+	 */
+	public List<ProjectInfoBean> getProCode(){
+		ArrayList<ProjectInfoBean> arrayList = new ArrayList<>();
+		List<ProjectInfoBean> queryProject = queryProject();
+		List<ProInfo> read = Dom4jToXml.read();
+		for(ProjectInfoBean i:queryProject){
+			for(ProInfo j:read){
+				if(j.getProjId() == null || ("").equals(j.getProjId())){
+					return null;
+				}
+				if(j.getProjName() == null || ("").equals(j.getProjName())){
+					return null;
+				}
+				if(i.getProjId().contains(j.getProjId())){
+					ProjectInfoBean projectInfoBean = new ProjectInfoBean();
+					projectInfoBean.setProjId(i.getProjId());
+					projectInfoBean.setProjCode(j.getProjCode());
+					projectInfoBean.setProjName(i.getProjName());
+					arrayList.add(projectInfoBean);
+				}
+			}
+		}
+		return arrayList;
+		
+	}
+}

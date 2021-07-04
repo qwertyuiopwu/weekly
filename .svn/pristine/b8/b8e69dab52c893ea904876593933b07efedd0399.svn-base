@@ -1,0 +1,12 @@
+<head th:fragment="commonHead(title)">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title th:text="${title}">Title</title>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap-3.4.1/css/bootstrap.min.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap-3.4.1/css/bootstrap-theme.min.css}" />
+    
+    <script th:src="@{/jQuery/jquery-3.6.0.min.js}"></script>
+    <script th:src="@{/bootstrap-3.4.1/js/bootstrap.min.js}"></script>
+ 
+</head>

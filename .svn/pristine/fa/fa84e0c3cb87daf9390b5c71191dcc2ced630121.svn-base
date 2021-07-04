@@ -1,0 +1,26 @@
+package com.formssi.weekReportTool.dbTest.controller;
+
+import com.formssi.weekReportTool.system.DB.DataSourceType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.formssi.weekReportTool.dbTest.service.DbTestService;
+
+@RestController
+public class DbTestController {
+	
+	@Autowired
+	private DbTestService dbTestService;
+
+	@DataSourceType("梁教亮-0716-0731周报")
+	@GetMapping("/123")
+	public void getPersonInfo() throws Exception {
+		dbTestService.quertyPersonInfo();
+	}
+	
+	@GetMapping("/")
+	public String init() {
+		return "Welcome to my project!! tanks you very much!!!";
+	}
+}

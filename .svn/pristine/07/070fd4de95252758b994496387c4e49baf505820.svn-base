@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head :: commonHead('假日')"></head>
+<body>
+    <form class="container form-control" th:action="@{/holiday/saveHolidays}" method="post">
+        <p class="button" th:text="${welcome}"></p>
+        
+        <p>请选择周报年月</p>
+        <div class="input-group date datepicker-yyyymm">
+            <input id="selectYearAndMonth" name="selectYearAndMonth" type="text" class="form-control" onkeydown="return false" th:value="${holiday.selectYearAndMonth}">
+            <div class="input-group-addon">
+                <span class="glyphicon glyphicon-th"></span>
+            </div>
+        </div>
+    
+        <p>法定节假日</p>
+        <div class="input-group date datepicker">
+            <input id="toHolidays" name="toHolidays" type="text" class="form-control" onkeydown="return false" th:value="${holiday.toHolidays}">
+            <div class="input-group-addon">
+                <span class="glyphicon glyphicon-th"></span>
+            </div>
+        </div>
+        
+        <p>补班日</p>
+        <div class="input-group date datepicker">
+            <input id="toWorkDays" name="toWorkDays" type="text" class="form-control" onkeydown="return false" th:value="${holiday.toWorkDays}">
+            <div class="input-group-addon">
+                <span class="glyphicon glyphicon-th"></span>
+            </div>
+        </div>
+        
+        <div class="my-sm-2">
+            <button id="submit" type="submit" class="btn btn-success">保存</button>
+        </div>
+        
+    </form>
+</body>
+<script type="text/javascript">
+    (function (){
+        $('.datepicker-yyyymm').datepicker({
+        	language: 'zh-CN', 
+            autoclose: true, 
+            clearBtn: true,
+            format: "yyyy-mm",
+            minViewMode: 1,   // 最小精度选择
+            startView: 1,     //开始显示
+            endDate:new Date()
+        });
+        $('.datepicker').datepicker({
+	    	language: 'zh-CN', 
+	        autoclose: true, 
+	        clearBtn: true,
+	        format: "yyyy-mm-dd",
+	        multidate:true,
+	        startDate: $("#selectYearAndMonth").val()+"-01",
+	        endDate: new Date()
+    	});
+    })();
+    
+    $("#selectYearAndMonth").change(function(evt){
+    	if(evt.target.value != ""){
+    		liberateDatepicker();
+    	}
+    })
+    
+    function liberateDatepicker(){
+		$(".datepicker input").attr("disabled",false);
+        $(".datepicker").datepicker("setStartDate", $("#selectYearAndMonth").val()+"-01");
+        var selectYearAndMonth = $("#selectYearAndMonth").val().split("-");
+        var nextMonth = parseInt(selectYearAndMonth[1])+1
+        $(".datepicker").datepicker("setEndDate", new Date(new Date(selectYearAndMonth[0]+"-"+nextMonth).setDate(0)));
+        $(".datepicker").datepicker("update", new Date());
+    }
+    
+</script>
+</html>

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head :: commonHead('person')"></head>
+<body class="form-control">
+    <form role="form" id="formdata">
+      <div style="width:80%;margin: 0 auto" class="form-group">
+
+	  <table class="table table-striped table-bordered table-hover table-condensed table-responsive" >
+	  		<caption style="caption-side:top;text-align: center;">
+	  		<h3>成员信息</h3>
+	  		</caption>
+	        <thead>
+	        <tr>
+	        
+		        <th><label></label>总人数</th>
+		        <td><span id="num" th:text="${personData.sum}">0</span><input id="sum" name="sum" type="hidden" th:value="${personData.sum}"></td>
+		         <th>所属部门</th>
+		        <td>
+		        	<input type="text" id="dept" name="dept" class="form-group" th:value="${personData.dept}">
+		        </td>
+	        </tr>
+	        	<tr>
+	        	    <th>序号</th>
+		        	<th>姓名</th>
+		        	<th>邮箱</th>
+		        	<th colspan="2">操作</th>
+	        	</tr>
+	        </thead>
+	         <tbody id="tbody">
+	        
+	           <tr th:each="p,status:${personData.person}" th:id="${status.index+1}">
+	                <td th:text="${status.index+1}">
+	           	 		
+	           	 	</td>
+	           	 	<td>
+	           	 		<input type="text" th:id="|person[${status.index+1}].name|" th:name="|person[${status.index+1}].name|" class="form-group" th:value="${p.name}">
+	           	 	</td>
+	 		        <td >
+	 		       		 <input type="text" th:id="|person[${status.index+1}].email|" th:name="|person[${status.index+1}].email|" class="form-group" th:value="${p.email}">
+	 		        </td>
+	 		         <td> <button type="button" class="btn btn-danger" onclick="del(this)">删除</button></td>
+	           </tr>
+	         </tbody>
+	         <tfoot>
+		         <tr>
+		            <td colspan="4" style="text-align: center">
+		            
+		            <button type="button" class="btn btn-primary" onclick="add()">新增</button>
+		             <button type="button" class="btn btn-success" id="sub">保存</button>
+		            </td>
+		         </tr>
+	        
+	         </tfoot>
+	         
+	   </table>
+    </div>
+  </form>
+</body>
+<script type="text/javascript" th:inline="javascript">
+var sum=Number([[${personData.sum}]]);
+
+function add(){
+	sum=sum+1;
+	var html="<tr id='"+sum+"'><td>"+sum+"</td>"
+	+"<td><input type=\"text\" id=\"person["+sum+"].name\" name=\"person["+sum+"].name\" class=\"form-group\"></td>"
+	+"<td><input type=\"text\" id=\"person["+sum+"].email\" name=\"person["+sum+"].email\" class=\"form-group\"></td>"
+	+"<td> <button type=\"button\" class=\"btn btn-danger\" onclick=\"del(this)\">删除</button></td>"
+    +"</tr>";
+	var tbody=$("#tbody").append(html);
+    $("#num").text(sum);
+    $("#sum").val(sum);
+}
+
+function del(obj){
+	$(obj).parents("tr").remove();
+	sum=sum-1;
+	$("#num").text(sum);
+	$("#sum").val(sum);
+	for(var i=0;i<sum;i++){
+		var j=i+1;
+		$($("#tbody").children()[i]).attr("id",j);
+		
+		$($($("#tbody").children()[i]).children()[0]).text(i+1);
+		$($($($("#tbody").children()[i]).children()[1]).children()[0]).attr("id","person["+j+"].name");
+		$($($($("#tbody").children()[i]).children()[1]).children()[0]).attr("name","person["+j+"].name");
+		$($($($("#tbody").children()[i]).children()[2]).children()[0]).attr("id","person["+j+"].email");
+		$($($($("#tbody").children()[i]).children()[2]).children()[0]).attr("name","person["+j+"].email");
+	}
+}
+
+
+$("#sub").click(function(){
+	for(var i=0;i<sum;i++){
+		var j=i+1;		
+		var name=$($($($("#tbody").children()[i]).children()[1]).children()[0]).val();
+		var email=$($($($("#tbody").children()[i]).children()[2]).children()[0]).val();
+ 	   console.log(name);
+		console.log(email); 
+		if(name=="" || email==""){
+			alert("不能为空值");
+			return false;
+		}
+	}
+	
+		$.ajax({
+		url:"/person/submitPerson",
+	    type:"POST",
+	    dataType:"json",
+	    data:$("#formdata").serialize(),
+	    success:function(data){
+	    	alert(data.msg);
+	    },
+	    error:function(data){
+	    	alert("服务器问题！");
+	    }
+	});
+});
+</script>
+</html>

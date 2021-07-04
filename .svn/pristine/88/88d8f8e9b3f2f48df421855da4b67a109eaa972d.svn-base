@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url : jdbc:ucanaccess://D:\ReportClient2\梁教亮-0801-0815周报.mdb;openExclusive=false;ignoreCase=true
+    driver-class-name : net.ucanaccess.jdbc.UcanaccessDriver
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    mapUnderscoreToCamelCase: true

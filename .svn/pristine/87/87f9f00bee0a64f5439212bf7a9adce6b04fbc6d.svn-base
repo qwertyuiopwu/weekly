@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PersonData sum="3" dept="交付部">
+  <Person>
+    <Name>谢绍柱1</Name>
+    <Email>874545@qq.com</Email>
+  </Person>
+  <Person>
+    <Name>谢绍柱2</Name>
+    <Email>123456@qq.com</Email>
+  </Person>
+  <Person>
+    <Name>谢绍柱2</Name>
+    <Email>457678@qq.com</Email>
+  </Person>
+</PersonData>
